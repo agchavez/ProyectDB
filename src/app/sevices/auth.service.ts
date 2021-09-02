@@ -20,7 +20,6 @@ export class AuthService {
 
   constructor(private http: HttpClient) {
 
-
    }
 
    logout(){
@@ -78,7 +77,8 @@ export class AuthService {
 
    leertoken(){
      if(localStorage.getItem('token')){
-       this.userToken = localStorage.getItem('token')
+       this.userToken = localStorage.getItem('token')  
+       
      }else{
        this.userToken = '';
      }
