@@ -1,6 +1,8 @@
 import { formatCurrency, NgForOf } from '@angular/common';
+import { Route } from '@angular/compiler/src/core';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { UsuarioModel } from '../../models/usuario.model';
 import { AuthService } from '../../sevices/auth.service';
@@ -12,8 +14,11 @@ import { AuthService } from '../../sevices/auth.service';
 })
 export class RegistroComponent implements OnInit {
   usuario:UsuarioModel;  
+  recordar = false;
 
-  constructor(private auth: AuthService) { }
+  constructor(private auth: AuthService,
+              private route:Router) 
+              { }
 
   ngOnInit() { 
     
@@ -37,11 +42,14 @@ export class RegistroComponent implements OnInit {
      .subscribe(resp=> {
        console.log(resp);
        Swal.close();
+       if(this.recordar){
+        localStorage.setItem('email', this.usuario.email);
+      }
+       this.route.navigateByUrl('/home');
      }, (err)=>{
         alert(err.error.error.message);
         Swal.fire({
           icon: 'error',
-        
           width: '350px',
       heightAuto: false,
           text: err.error.error.message,

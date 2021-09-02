@@ -13,12 +13,17 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   usuario:UsuarioModel;
+  recordar = false;
   constructor(private auth: AuthService,
               private route: Router) 
               { }
 
   ngOnInit() {
     this.usuario = new UsuarioModel();
+    if(localStorage.getItem('email')){
+      this.usuario.email = localStorage.getItem('email');
+    }
+
   }
 
   onsumit(form:NgForm){
@@ -36,7 +41,11 @@ export class LoginComponent implements OnInit {
       },
   });  
     this.auth.Login(this.usuario)
+      
       .subscribe(resp=>{
+        if(this.recordar){
+          localStorage.setItem('email', this.usuario.email);
+        }
         console.log(resp)
         Swal.close()
         this.route.navigateByUrl('/home')
@@ -44,9 +53,8 @@ export class LoginComponent implements OnInit {
         console.log(err.error.error.message);
         Swal.fire({
           icon: 'error',
-        
           width: '350px',
-      heightAuto: false,
+          heightAuto: false,
           text: err.error.error.message,
           title: 'Error al ingresar'
           
