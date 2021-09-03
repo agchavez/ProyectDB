@@ -20,12 +20,10 @@ export class AuthService {
 
   constructor(private http: HttpClient) {
 
-
    }
 
    logout(){
-
-
+     localStorage.removeItem('token');
    }
 
 
@@ -78,11 +76,16 @@ export class AuthService {
 
    leertoken(){
      if(localStorage.getItem('token')){
-       this.userToken = localStorage.getItem('token')
+       this.userToken = localStorage.getItem('token')  
+       
      }else{
        this.userToken = '';
      }
 
      return this.userToken;
+   }
+
+   isAutenticated(): boolean {
+     return this.userToken.length > 2;
    }
 }
